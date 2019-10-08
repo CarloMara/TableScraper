@@ -5,7 +5,7 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.layout import LAParams, LTTextBox, LTTextLine, LTFigure, LTImage
 from pdfminer.converter import PDFPageAggregator
-
+import text_box as tb
 
 class PdfExtractor:
 
@@ -14,6 +14,7 @@ class PdfExtractor:
         self.h = h
         self.file = file
         self.__layout_pages()
+        self.layout = []
 
     def __layout_pages(self):
         # Open a PDF file.
@@ -38,7 +39,7 @@ class PdfExtractor:
         self.interpreter.process_page(self.pages.get(page_number))  # receive the LTPage object for this page
         return self.device.get_result()
 
-    def get_text_box(self, page_number):
+    def get_text_box_list(self, page_number):
         text_box = []
         layout = self.layout_page(page_number)
         for obj in layout:
@@ -51,48 +52,19 @@ class PdfExtractor:
                       (self.h - (obj.y1 / layout.height) * self.h))
         return text_box
 
-    def mine_pdf2(self, page_number):
+    def get_text_box(self, obj):
+        if isinstance(obj, LTTextBox):
+            text_box =((obj.x0 / self.layout.width) * self.w,
+                             (obj.x1 / self.layout.width) * self.w,
+                             self.h - (obj.y0 / self.layout.height) * self.h,
+                             self.h - (obj.y1 / self.layout.height) * self.h)
+            return text_box
+        return None
+
+    def get_text_chunks(self, page_number):
         text_chunks = []
-        layout = self.layout_page(page_number)
-        for obj in layout:
+        self.layout = self.layout_page(page_number)
+        for obj in self.layout:
             if isinstance(obj, LTTextBox):
-                text_chunks.append(obj)
+                text_chunks.append(tb.TextBox(obj.x0, obj.x1, self.h - obj.y0, self.h - obj.y1, obj.get_text().strip("\n")))
         return text_chunks
-
-    def find_start_img_chunks(self, text_chunks, header_size=22, start_index=0):
-        """Find instruction in page by searching for text with a given height. Return a list with the name,
-        the mnemonic and the operands and the starting location in the page """
-        started = False
-        last_index = 0
-        name = ""
-        name_y = ()
-        mnemonic = "AAAA"
-        operands = "BBBB"
-        cursed_recursion = []
-
-        for i in range(start_index, len(text_chunks)):
-            if header_size - 1 < (text_chunks[i].y1 - text_chunks[i].y0) < header_size + 1:
-                last_index = i
-                if started:
-                    cursed_recursion.append((name, name_y, mnemonic, operands))
-                    cursed_recursion.append(self.find_start_img_chunks(text_chunks, start_index=last_index))
-                    return cursed_recursion
-                name = text_chunks[i].get_text()
-                name_y = (text_chunks[i].y0, text_chunks[i].y1)
-                started = True
-                continue
-                # Should we suppose that the next two elements are always the mnemonic?
-            if last_index == i - 1:
-                mnemonic = text_chunks[i].get_text()
-            if last_index == i - 2:
-                operands = text_chunks[i].get_text()
-        return name, name_y, mnemonic, operands
-
-    @staticmethod
-    def print_start_chunks(chunks):
-        for i in chunks:
-            print("Name: " + str(i[0]).strip('\n'))
-            print("    Y0: " + str(i[1][0]).strip('\n') + "   Y1: " + str(i[1][1]).strip('\n'))
-            print("Mnemonic: " + str(i[2]).strip('\n'))
-            print("Operands: " + str(i[3]).strip('\n'))
-            print("\n")
