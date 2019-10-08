@@ -34,15 +34,17 @@ def is_container(container, chunk):
         return False
 
 
-def find_header_or_title(text_chunks, header_size=28, title_size=21):
-    headers = []
+def find_header_or_title(text_chunks, header_size=28, title_size=21, mnemonics_size=14):
     titles = []
+    mnemonics = []
     for i in text_chunks:
-        if header_size - 1 < (i[3] - i[2]) < header_size + 1:
-            headers.append(i)
-        if title_size - 1 < (i[3] - i[2]) < title_size + 1:
+        if header_size - 1 < (i.y0 - i.y1) < header_size + 1:
             titles.append(i)
-    return headers, titles
+        if title_size - 1 < (i.y0 - i.y1) < title_size + 1:
+            titles.append(i)
+        if mnemonics_size - 1 < (i.y0 - i.y1) < mnemonics_size + 1:
+            mnemonics.append(i)
+    return titles, mnemonics
 
 
 def print_start_chunks(chunks):
