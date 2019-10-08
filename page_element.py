@@ -8,6 +8,8 @@ class PageElement():
         self.container = container  # heat box
         self.children = children    # array of textboxes
         self.sorted_children = self.sort_children()
+        self.xc = container.xc
+        self.yc = container.yc
 
     def sort_children(self):
         tmp = sorted(self.children, key=lambda text_box: text_box.yc)
