@@ -6,7 +6,7 @@ class HeatBox:
         self.y0 = y0
         self.y1 = y1
         self.xc = (x1 + x0)/2
-        self.yx = (y1 + y0)/2
+        self.yc = (y1 + y0)/2
 
     def is_container(self, chunk, x_tolerance=1, y_tolerance=2):
         if (self.x0 - x_tolerance) <= chunk.x0 <= (self.x1 + x_tolerance) and \
