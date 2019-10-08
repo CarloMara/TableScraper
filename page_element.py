@@ -1,27 +1,21 @@
+import itertools
+
+
 class PageElement():
     # Page element contains all text boxes inside a heat zone
 
     def __init__(self, container, children):
-        self.container = container  #heat box
-        self.children = children    #array of textboxes
-        self.grouped_chunks = self.consolidate_children()
+        self.container = container  # heat box
+        self.children = children    # array of textboxes
+        self.sorted_children = self.sort_children()
 
-    def consolidate_children(self):
-        tmp = self.children
+    def sort_children(self):
+        tmp = sorted(self.children, key=lambda text_box: text_box.yc)
+        y_group = itertools.groupby(tmp, lambda text_box: text_box.yc)
 
-        # group by same Y
-        grouped_chunks = []
-        done_x = []
-        done_y = []
-        for i in tmp:
-            tmp_list = []
-            for k in tmp:
-                if int(i.yc) == int(k.yc):
-                    tmp_list.append(k)
-                    done_y.append(int(k.yc))
-
-            if not (int(i.yc) in done_x):
-                grouped_chunks.append(tmp_list)
-                done_x.append(int(i.yc))
-
-        return grouped_chunks
+        sorted_chunk = []
+        for key, group in y_group:
+            sorted_x = sorted(group, key=lambda text_box: text_box.xc)
+            for box in sorted_x:
+                sorted_chunk.append(box)
+        return sorted_chunk
