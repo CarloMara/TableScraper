@@ -1,7 +1,9 @@
 import page_element as pg_chk
 import util
 import cv2
+import numpy as np
 import itertools
+import instruction_box as inbox
 
 
 
@@ -10,6 +12,7 @@ class Aggregator:
 
     def __init__(self, page_elements, text_chunks):
         self.page_elements = self.find_container(page_elements, text_chunks)
+        self.titles, self.mnemonics = util.find_header_and_mnemonic(text_chunks)
 
     def find_container(self, containers, chunks):
         page_chunks = []
@@ -21,6 +24,34 @@ class Aggregator:
 
             page_chunks.append(pg_chk.PageElement(container, text_children))
         return self.sort_children(page_chunks)
+
+    def get_instructions(self):
+        instruction_boundaries = self.__get_instructions_boundary()
+        instructions = []
+        for instruction in instruction_boundaries:
+            instructions.append(
+                inbox.InstructionBox(instruction[0], instruction[1], instruction[2], self.page_elements))
+
+        return instructions
+
+    def __get_instructions_boundary(self):
+        sorted_titles = sorted(self.titles, key=lambda textbox: textbox.yc)
+        split_gen = self.chunks(sorted_titles, 2)
+        splitted = []
+
+        for i in split_gen:
+            splitted.append(i)
+
+        splitted.append([sorted_titles[len(sorted_titles)-1], ])
+
+        coords_list = []
+        for coords in splitted:
+            try:
+                coords_list.append((coords[0].y1, coords[1].y0, coords[0].text))
+            except IndexError:
+                coords_list.append((coords[0].y1, 842, coords[0].text))
+
+        return coords_list
 
     def draw_stuff(self, img):
         for element in self.page_elements:
@@ -43,3 +74,9 @@ class Aggregator:
             for box in sorted_x:
                 sorted_page_elements.append(box)
         return sorted_page_elements
+
+    @staticmethod
+    def chunks(l, n):
+        """Yield successive n-sized chunks from l."""
+        for i in range(0, len(l), n):
+            yield l[i:i + n]
