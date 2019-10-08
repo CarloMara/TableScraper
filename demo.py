@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     for k in aggregator.page_elements:
         print("IMG Chunk: ")
-        for elm in k.grouped_chunks:
+        for elm in k.sorted_children:
             print(elm)
         print("\n")
 
@@ -45,20 +45,6 @@ if __name__ == "__main__":
         util.draw_chunk_box(img, (int(text.x0), int(text.x1)),
                             (int(text.y0), int(text.y1)), color=util.rgb_to_bgr((255, 181, 22)))
 
-    #
-    # for box in box_headers:
-    #     cv2.circle(work_img, (int(box.xc), H - int(box.yc)), 10, (util.rgb_to_bgr((105,87,31))))
-    #     print(box.xc)
-    #     print(box.yc)
-    #     boxes.append(box)
-    #
-    # for box in boxes_img:
-    #     cv2.circle(work_img, (int(box.xc), int(box.yc)), 10, (util.rgb_to_bgr((255,220,142))))
-    #     print(box.xc)
-    #     print(box.yc)
-    #     boxes.append(box)
-    #
-    # boxes_sort(boxes)
 
     view = sdl.SdlView((W, H))
 
