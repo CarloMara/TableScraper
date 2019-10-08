@@ -34,7 +34,7 @@ def is_container(container, chunk):
         return False
 
 
-def find_header_or_title(text_chunks, header_size=28, title_size=21, mnemonics_size=14):
+def find_header_and_mnemonic(text_chunks, header_size=28, title_size=21, mnemonics_size=14):
     titles = []
     mnemonics = []
     for i in text_chunks:
