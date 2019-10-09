@@ -1,84 +1,16 @@
-aiosmtpd==1.2
-alembic==1.0.7
-atpublic==1.0
-bashlex==0.14
-bincopy==16.0.0
-bleach==3.1.0
-bottle==0.12.16
-Click==7.0
-compiledb==0.9.8
-cycler==0.10.0
-defusedxml==0.6.0
-dnspython==1.16.0
-entrypoints==0.3
-falcon==1.4.1
-filelock==3.0.10
-Flask==1.0.2
-flufl.bounce==3.0
-flufl.i18n==2.0.1
-flufl.lock==3.2
-humanfriendly==4.17
-intervaltree==2.1.0
-ipykernel==5.1.2
-ipywidgets==7.5.1
-itsdangerous==1.1.0
-Jinja2==2.10
-jupyter==1.0.0
-jupyter-client==5.3.3
-jupyter-console==6.0.0
-jupyter-core==4.5.0
-kiwisolver==1.1.0
-lazr.config==2.2.1
-lazr.delegates==2.0.4
-Mako==1.0.7
-MarkupSafe==1.1.0
-matplotlib==3.1.1
-mistune==0.8.4
-msgpack==0.5.6
-nbconvert==5.6.0
-nbformat==4.4.0
-nose==1.3.7
-notebook==6.0.1
-numpy==1.17.2
-opencv-python==4.1.1.26
-pandocfilters==1.4.2
-passlib==1.7.1
-Paste==3.0.6
-pdfminer.six==20170720
-pluggy==0.9.0
-pprint==0.1
-prometheus-client==0.7.1
-py==1.8.0
-pycryptodome==3.7.0
-pypandoc==1.4
-pypng==0.0.18
-PySDL2==0.9.6
-pyserial==3.4
-PySocks==1.6.8
-python-dateutil==2.7.5
-python-editor==1.0.4
-python-lzo==1.12
-python-mimeparse==1.6.0
-pyzmq==18.1.0
-qtconsole==4.5.5
-ROPGadget==5.4
-Send2Trash==1.5.0
-sortedcontainers==1.5.10
-SQLAlchemy==1.2.17
-terminado==0.8.2
-testpath==0.4.2
-toml==0.10.0
-tox==3.7.0
-virtualenv==16.4.1
-Werkzeug==0.14.1
-widgetsnbextension==3.5.1
-zope.component==4.5
-zope.configuration==4.3.0
-zope.deferredimport==4.3
-zope.deprecation==4.4.0
-zope.event==4.4
-zope.hookable==4.2.0
-zope.i18nmessageid==4.3.1
-zope.interface==4.6.0
-zope.proxy==4.3.1
-zope.schema==4.9.3
+Package          Version 
+---------------- --------
+chardet          3.0.4   
+Django           2.2.6   
+numpy            1.17.2  
+opencv-python    4.1.1.26
+pdfminer.six     20181108
+pip              19.2.3  
+pycryptodome     3.9.0   
+PySDL2           0.9.6   
+pytz             2019.3  
+setuptools       41.4.0  
+six              1.12.0  
+sortedcontainers 2.1.0   
+sqlparse         0.3.0   
+wheel            0.33.6  
