@@ -30,28 +30,33 @@ class Aggregator:
         instructions = []
         for instruction in instruction_boundaries:
             instructions.append(
-                inbox.InstructionBox(instruction[0], instruction[1], instruction[2], self.page_elements))
+                inbox.InstructionBox(instruction[0], instruction[1], instruction[2], self.page_elements, self.mnemonics))
 
         return instructions
 
     def __get_instructions_boundary(self):
         sorted_titles = sorted(self.titles, key=lambda textbox: textbox.yc)
-        split_gen = self.chunks(sorted_titles, 2)
-        splitted = []
+        if len(sorted_titles)>1:
+            split_gen = self.chunks(sorted_titles, 2)
+            splitted = []
 
-        for i in split_gen:
-            splitted.append(i)
+            for i in split_gen:
+                splitted.append(i)
 
-        splitted.append([sorted_titles[len(sorted_titles)-1], ])
+            splitted.append([sorted_titles[len(sorted_titles)-1], ])
 
-        coords_list = []
-        for coords in splitted:
-            try:
-                coords_list.append((coords[0].y1, coords[1].y0, coords[0].text))
-            except IndexError:
-                coords_list.append((coords[0].y1, 842, coords[0].text))
+            coords_list=[]
+            for coords in splitted:
+                try:
+                    coords_list.append((coords[0].y1, coords[1].y0, coords[0].text))
+                except IndexError:
+                    coords_list.append((coords[0].y1, 842, coords[0].text))
 
-        return coords_list
+            return coords_list
+        else:
+            coords_list = []
+            coords_list.append((sorted_titles[0].y1, 842, sorted_titles[0].text))
+            return coords_list
 
     def draw_stuff(self, img):
         for element in self.page_elements:
