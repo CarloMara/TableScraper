@@ -42,3 +42,7 @@ class SdlView:
                         index = 0
 
             sdl2.SDL_Delay(10)
+
+    def display_img(self, frames_3d):
+        self.window.show()
+        self.blit_3d_surface(frames_3d)
