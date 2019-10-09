@@ -1,7 +1,8 @@
 import os
 import cv2
 
-class Pdf2Img:
+
+class PdfImageExtractor:
 
     def __init__(self, path, W, H):
         self.path = path

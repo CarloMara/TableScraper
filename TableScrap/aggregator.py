@@ -1,10 +1,8 @@
-import page_element as pg_chk
-import util
 import cv2
-import numpy as np
+from .page_element import PageElement
+from .util import find_header_and_mnemonic, draw_chunk_box, rgb_to_bgr
 import itertools
-import instruction_box as inbox
-
+from .instruction_box import InstructionBox
 
 
 class Aggregator:
@@ -12,7 +10,7 @@ class Aggregator:
 
     def __init__(self, page_elements, text_chunks):
         self.page_elements = self.find_container(page_elements, text_chunks)
-        self.titles, self.mnemonics = util.find_header_and_mnemonic(text_chunks)
+        self.titles, self.mnemonics = find_header_and_mnemonic(text_chunks)
 
     def find_container(self, containers, chunks):
         page_chunks = []
@@ -22,7 +20,7 @@ class Aggregator:
                 if container.is_container(chunk):
                     text_children.append(chunk)
 
-            page_chunks.append(pg_chk.PageElement(container, text_children))
+            page_chunks.append(PageElement(container, text_children))
         return self.sort_children(page_chunks)
 
     def get_instructions(self):
@@ -30,7 +28,7 @@ class Aggregator:
         instructions = []
         for instruction in instruction_boundaries:
             instructions.append(
-                inbox.InstructionBox(instruction[0], instruction[1], instruction[2], self.page_elements, self.mnemonics))
+                InstructionBox(instruction[0], instruction[1], instruction[2], self.page_elements, self.mnemonics))
 
         return instructions
 
@@ -60,12 +58,12 @@ class Aggregator:
 
     def draw_stuff(self, img):
         for element in self.page_elements:
-            util.draw_chunk_box(img, (element.container.x0, element.container.x1),
-                                (element.container.y0, element.container.y1), color=util.rgb_to_bgr((150, 139, 116)))
+            draw_chunk_box(img, (element.container.x0, element.container.x1),
+                                (element.container.y0, element.container.y1), color=rgb_to_bgr((150, 139, 116)))
             for text in element.children:
-                cv2.circle(img, (int(text.xc), int(text.yc)), 3, color=util.rgb_to_bgr((150, 139, 116)))
-                util.draw_chunk_box(img, (int(text.x0), int(text.x1)),
-                                    (int(text.y0), int(text.y1)), color=util.rgb_to_bgr((255, 181, 22)))
+                cv2.circle(img, (int(text.xc), int(text.yc)), 3, color=rgb_to_bgr((150, 139, 116)))
+                draw_chunk_box(img, (int(text.x0), int(text.x1)),
+                                    (int(text.y0), int(text.y1)), color=rgb_to_bgr((255, 181, 22)))
         return img
 
     @staticmethod

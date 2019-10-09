@@ -1,7 +1,7 @@
 import itertools
 
 
-class PageElement():
+class PageElement:
     # Page element contains all text boxes inside a heat zone
 
     def __init__(self, container, children):

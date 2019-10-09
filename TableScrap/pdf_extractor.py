@@ -5,7 +5,8 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.layout import LAParams, LTTextBox, LTTextLine, LTFigure, LTImage
 from pdfminer.converter import PDFPageAggregator
-import text_box as tb
+from .text_box import TextBox
+
 
 class PdfExtractor:
 
@@ -66,5 +67,5 @@ class PdfExtractor:
         self.layout = self.layout_page(page_number)
         for obj in self.layout:
             if isinstance(obj, LTTextBox):
-                text_chunks.append(tb.TextBox(obj.x0, obj.x1, self.h - obj.y0, self.h - obj.y1, obj.get_text().strip("\n")))
+                text_chunks.append(TextBox(obj.x0, obj.x1, self.h - obj.y0, self.h - obj.y1, obj.get_text().strip("\n")))
         return text_chunks
