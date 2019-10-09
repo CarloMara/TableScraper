@@ -4,7 +4,6 @@ import projection_sampling as sample
 import util
 import heat_box as hb
 import text_box as box
-from IPython import embed
 
 
 def heat_map(img, height_threshold, draw_dots=False, draw_boxes=False, draw_chunks=False):
