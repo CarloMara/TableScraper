@@ -1,6 +1,6 @@
 import json
-import parse_pdf as parse
-
+# import parse_pdf as parse
+from TableScrap import parse_pdf as parse
 W = 595
 H = 842
 
